@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Teo Espero" />
+  <title>simba — User and testing guide</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: none;
+padding: 0;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 0;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style>
+:root{color-scheme:light;--ink:#173a40;--teal:#087e83;--line:#cce1df;--paper:#fff;--muted:#526d71}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:2rem}body{margin:0;background:#eef6f4;color:var(--ink);font:17px/1.7 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body>header,body>nav,body>main{max-width:1050px;margin:auto}header#title-block-header{max-width:none;background:linear-gradient(120deg,#063a42,#086c70);color:white;padding:64px max(28px,calc((100vw - 1000px)/2));border-bottom:7px solid #35c4b0}header .title{font-size:clamp(2rem,5vw,3.4rem);line-height:1.15;margin:0 0 22px;letter-spacing:-.045em}header p{color:#d6eeea;margin:5px 0}main{padding:36px 42px 70px;background:var(--paper);box-shadow:0 10px 50px #173a4009}h1{font-size:1.85rem;border-top:1px solid var(--line);padding-top:30px;margin-top:42px;line-height:1.3;letter-spacing:-.025em}main>h1:first-child{border:0;padding:0;margin-top:0}h2{font-size:1.25rem;margin-top:30px;color:#075e64}a{color:#08777d;text-underline-offset:3px}a:hover{color:#03434b}p,ul,ol{margin:15px 0}li{padding-left:4px;margin:6px 0}strong{color:#075d64}header strong{color:inherit}table{border-collapse:collapse;width:100%;margin:23px 0;font-size:.94rem;line-height:1.55;display:block;overflow:auto}thead{background:#0a666d;color:white}th{text-align:left;font-weight:650}td,th{padding:13px 17px;vertical-align:top;border-bottom:1px solid var(--line)}tbody tr:nth-child(even){background:#f0f8f6}td:first-child{min-width:150px;font-weight:550}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.87em;background:#e9f3f1;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#102f36;color:#e0f4ed;padding:23px;border-left:4px solid #27bda8;border-radius:6px;overflow-x:auto;line-height:1.6}pre code{background:none;padding:0;color:inherit;overflow-wrap:normal}div.sourceCode{margin:22px 0}.sourceCode span.co{color:#9bc7be}.sourceCode span.st{color:#a7e5be}.sourceCode span.kw,.sourceCode span.cf{color:#70d8da}.contents{background:#eaf7f3;border:1px solid #c9e3dd;border-radius:8px;padding:19px 25px;margin:30px 0}.contents h2{margin:0 0 12px}.contents ul{columns:2;padding-left:20px;margin:0}.contents li{break-inside:avoid;margin:5px 0}.contents a{text-decoration:none}.page-footer{border-top:1px solid var(--line);margin-top:45px;padding-top:20px;font-size:.85rem;color:var(--muted)}:focus-visible{outline:3px solid #18a68f;outline-offset:4px}
+@media(max-width:650px){body{font-size:16px}header#title-block-header{padding:38px 22px}main{padding:25px 20px 45px}.contents ul{columns:1}h1{font-size:1.55rem}td,th{padding:10px 12px}pre{padding:17px;font-size:.9rem}}
+@media print{body{background:white;font-size:10pt}header#title-block-header{background:white;color:#173a40;padding:10px 0 20px;border-bottom:2px solid #087e83}header p{color:#526d71}main{max-width:none;padding:10px 0;box-shadow:none}h1,h2{break-after:avoid}tr,pre{break-inside:avoid}pre{white-space:pre-wrap;background:#f0f5f4;color:#173a40}a{color:inherit}.contents{background:white}table{display:table;font-size:9pt}}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">simba — SMB shares navigator</h1>
+<p class="author">Teo Espero</p>
+<p class="date">Documentation: 18 October 2026 · Script: 3.0.1</p>
+</header>
+<main id="main-content">
+<h1 id="about-simba">About simba</h1>
+<p><strong>simba</strong> is a Bash terminal application for discovering
+Windows domain hints, browsing SMB file shares, and connecting saved
+network drives from Ubuntu or Debian. Its blue, dual-pane interface
+takes inspiration from Norton Commander. It uses letter shortcuts,
+status messages, progress indicators, and keyboard-operated overlay
+dialogs.</p>
+<p><strong>Author:</strong> Teo Espero. <strong>Script version:</strong>
+3.0.1. <strong>Script created and last updated:</strong> 17 October
+2026. This guide describes the current script and the offline tests
+performed during development.</p>
+<nav class="contents" aria-label="Contents"><h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#capabilities">Capabilities</a></li>
+<li><a href="#requirements-and-setup">Requirements and setup</a></li>
+<li><a href="#startup-and-discovery">Startup and discovery</a></li>
+<li><a href="#interface-and-controls">Interface and controls</a></li>
+<li><a href="#connecting-a-shared-drive">Connecting a shared
+drive</a></li>
+<li><a href="#code-walkthrough">Code walkthrough</a></li>
+<li><a href="#credentials-and-saved-data">Credentials and saved
+data</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#simulated-domain-and-share-testing">Simulated domain and
+share testing</a></li>
+<li><a href="#revision-history">Revision history</a></li>
+</ul></nav>
+<h1 id="capabilities">Capabilities</h1>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Current behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Domain discovery</td>
+<td style="text-align: left;">Uses DNS suffix hints and saved profiles
+to look for advertised Active Directory domain controllers. Supports
+manual DNS domain entry.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Share browsing</td>
+<td style="text-align: left;">Authenticates to a specified file server
+and lists returned disk shares, including names containing spaces.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saved drives</td>
+<td style="text-align: left;">Adds, edits, and removes profiles;
+connects and disconnects SMB mounts.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Terminal interface</td>
+<td style="text-align: left;">Saved drives on the left, discovered
+shares on the right, persistent menu, status line, and task bar.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dependency setup</td>
+<td style="text-align: left;">Offers to install missing packages on
+supported apt-based systems.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Startup prefetch</td>
+<td style="text-align: left;">Loads profiles, mount state, and DNS
+discovery results before opening the interface.</td>
+</tr>
+</tbody>
+</table>
+<p>Domain discovery does not enumerate every file server or every
+storage location in a domain. Browsing shares requires a known server
+hostname or IPv4 address. Results depend on the server and the
+permissions of the supplied account.</p>
+<p>simba accesses shares; it does not join Active Directory, configure a
+VPN, alter <code>/etc/fstab</code>, or automatically reconnect drives at
+login.</p>
+<h1 id="requirements-and-setup">Requirements and setup</h1>
+<ul>
+<li>Ubuntu or Debian with Bash 4.4 or newer.</li>
+<li>A terminal at least <strong>100 columns × 24 rows</strong>, with a
+font that supports box-drawing characters.</li>
+<li>Network access to the file server and working name resolution.
+Office resources may require an office LAN connection or a VPN with
+internal DNS.</li>
+<li>A Windows account permitted to access the requested share, and a
+server supporting the required SMB3 encryption.</li>
+<li>Local sudo access for installing dependencies and mounting or
+unmounting drives.</li>
+</ul>
+<p>Run the script as your normal Linux user:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Start simba; sudo is requested only when needed.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> simba.sh</span></code></pre></div>
+<p>Alternatively, make it executable once and run it directly:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x simba.sh</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./simba.sh</span></span></code></pre></div>
+<p>The dependency check maps missing commands to packages, removes
+duplicate package names, and asks before running
+<code>sudo apt-get</code>. Declining exits. A failed package-list
+refresh or installation stops setup; required commands are checked again
+after installation. Do not run the entire script with sudo or enable
+shell tracing around password handling.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>cifs-utils</code></td>
+<td style="text-align: left;">CIFS/SMB mounting helper</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>smbclient</code></td>
+<td style="text-align: left;">Authenticated share enumeration</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>dnsutils</code></td>
+<td style="text-align: left;">DNS SRV lookups using
+<code>dig</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>dialog</code></td>
+<td style="text-align: left;">Bootstrap dialogs; runtime popups use
+Bash</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>sudo</code></td>
+<td style="text-align: left;">Privileged local operations</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>util-linux</code>,
+<code>mount</code></td>
+<td style="text-align: left;">Mount inspection, instance locking,
+mounting and unmounting</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>coreutils</code>,
+<code>findutils</code>, <code>gawk</code></td>
+<td style="text-align: left;">File handling and text processing</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>xdg-utils</code></td>
+<td style="text-align: left;">Opening mounted folders in a desktop file
+manager</td>
+</tr>
+</tbody>
+</table>
+<p>On systems without apt, missing dependencies must be installed
+manually. Desktop folder opening also needs a usable graphical
+session.</p>
+<h1 id="startup-and-discovery">Startup and discovery</h1>
+<ol type="1">
+<li>Check dependencies and create a private session directory.</li>
+<li>Acquire a single-instance lock.</li>
+<li>Display progress in the ordinary terminal while loading valid
+profiles, inspecting local mounts, and collecting domain hints.</li>
+<li>Query candidate domains for
+<code>_ldap._tcp.dc._msdcs.&lt;domain&gt;.</code> SRV records.</li>
+<li>Cache the results, clear the terminal, and open the full-screen
+interface.</li>
+</ol>
+<p>Startup does not ask for Windows credentials or open SMB sessions.
+Discovery examines a bounded set of DNS suffix candidates rather than
+scanning the subnet. Advertised controller records are discovery hints,
+not authenticated proof of domain identity. Empty results can mean
+missing internal DNS, no usable hints, no domain on the network, or an
+unavailable network.</p>
+<p>Press <strong>G</strong> to view cached domain results, enter a full
+DNS domain manually, or rescan after changing networks. Selecting a
+domain helps fill later forms; it does not join the computer to that
+domain.</p>
+<h2 id="what-happens-on-ordinary-wifi">What happens on ordinary
+WiFi?</h2>
+<p>The interface still loads on home or guest WiFi. Local profiles
+remain available, but office resources need a route to the office
+network, usually through a VPN. A local Windows computer can also share
+folders without a domain: supply that computer’s address and use its
+computer name as the account domain when using a local Windows account.
+The server must still meet simba’s SMB3 encryption requirements.</p>
+<h1 id="interface-and-controls">Interface and controls</h1>
+<p>The <strong>left panel</strong> holds saved drive profiles; the
+<strong>right panel</strong> holds the most recently browsed server’s
+shares. Tab changes the active panel. The cyan selection marks the
+current item. Share results retain their own server, domain, and
+username so changing the selected saved drive does not silently change
+their connection context.</p>
+<p>The top menu stays visible behind native Bash popup overlays. The
+bottom status line explains the current action or result; the task bar
+displays progress. Countable work uses a measured percentage. Network
+operations with unknown duration use animation, because their completion
+percentage cannot be measured reliably.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>Tab</code></td>
+<td style="text-align: left;">Switch panels</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>↑</code> / <code>↓</code>, or
+<code>k</code> / <code>j</code></td>
+<td style="text-align: left;">Select an item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Home</code> / <code>End</code></td>
+<td style="text-align: left;">First or last item</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Page Up</code> /
+<code>Page Down</code></td>
+<td style="text-align: left;">Scroll through list pages</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Enter</code></td>
+<td style="text-align: left;">Connect/open a saved drive, or save a
+selected share as a profile</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>H</code></td>
+<td style="text-align: left;">Open scrollable Help</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>G</code></td>
+<td style="text-align: left;">Discover or select domains</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>B</code></td>
+<td style="text-align: left;">Browse shares on a specified server</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>A</code></td>
+<td style="text-align: left;">Add a drive manually</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>E</code></td>
+<td style="text-align: left;">Edit a saved profile</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>C</code></td>
+<td style="text-align: left;">Connect; from a share, save the profile
+and then connect</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>D</code></td>
+<td style="text-align: left;">Disconnect the selected saved drive</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>X</code></td>
+<td style="text-align: left;">Remove the selected saved profile</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>O</code></td>
+<td style="text-align: left;">Open the mounted drive in a file
+manager</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>R</code></td>
+<td style="text-align: left;">Refresh the active list; saved-drive
+refresh also updates mount state</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Q</code></td>
+<td style="text-align: left;">Quit</td>
+</tr>
+</tbody>
+</table>
+<p>Editing, removing, and disconnecting operate on the saved-drive
+panel. Function keys are not required. In forms, Tab moves between
+fields and buttons, Enter accepts, and Escape cancels. Ctrl+U clears a
+field. Password input is fully hidden. Help supports scrolling and
+paging.</p>
+<p>Quitting restores terminal settings, resets colors, clears the
+screen, and prints <strong>“Goodbye! Thanks for using simba.”</strong>
+Existing mounts remain connected; use <strong>D</strong> before quitting
+if you want to disconnect them.</p>
+<h1 id="connecting-a-shared-drive">Connecting a shared drive</h1>
+<ol type="1">
+<li>Connect to the appropriate LAN or VPN, if required.</li>
+<li>Press <strong>G</strong> to select a discovered domain, or enter the
+account domain when prompted later.</li>
+<li>Press <strong>B</strong> and enter a file server such as
+<code>fs01.corp.example.test</code>, the domain, and your Windows
+username.</li>
+<li>Enter the Windows password in the hidden prompt.</li>
+<li>Select a returned disk share, such as
+<code>Engineering Shared</code>.</li>
+<li>Press <strong>Enter</strong> to review and save a profile, or
+<strong>C</strong> to save and connect.</li>
+<li>Supply the local sudo password if requested and the Windows password
+for the connection.</li>
+<li>Press <strong>O</strong> to open the mounted folder. Close open
+files before using <strong>D</strong> to disconnect.</li>
+</ol>
+<p>The example names above are fictional test data. A successful browse
+does not guarantee a successful mount: the account, server encryption
+support, share permissions, or local mount conditions may differ.</p>
+<p>The mount folder is <code>~/NetworkDrives/&lt;folder-ID&gt;</code>.
+The default dialect is SMB 3.1.1; SMB 3.0 is also selectable. The
+connection requires encryption and uses password-based NTLMSSP
+authentication. The script does not reuse a Kerberos ticket cache.</p>
+<h1 id="code-walkthrough">Code walkthrough</h1>
+<h2 id="section-comments-and-private-defaults">Section comments and
+private defaults</h2>
+<p>The script uses dashed separators around sections and comments
+explaining the more complex behavior. These startup settings disable
+tracing, detect unset variables and pipeline failures, and restrict
+newly created files:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shell settings and application state</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> +x</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-uo</span> pipefail</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">umask</span> 077</span></code></pre></div>
+<h2 id="keeping-progress-out-of-command-results">Keeping progress out of
+command results</h2>
+<p>The following excerpt is from <code>run_with_progress</code>. The
+worker writes stdout and stderr to separate files while the parent
+updates the terminal. This prevents progress characters from corrupting
+parsed DNS and SMB output. Only the worker loses stdin; the parent
+retains its terminal input descriptor.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span> <span class="op">&lt;</span>/dev/null <span class="op">&gt;</span><span class="st">&quot;</span><span class="va">$output</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span><span class="st">&quot;</span><span class="va">$errors</span><span class="st">&quot;</span> <span class="kw">&amp;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">TASK_PID</span><span class="op">=</span><span class="va">$!</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">kill</span> <span class="at">-0</span> <span class="st">&quot;</span><span class="va">$TASK_PID</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">((</span><span class="va">TASK_TICK</span><span class="op">+=</span><span class="dv">1</span><span class="kw">));</span> <span class="ex">progress_draw</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 0.12</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">wait</span> <span class="st">&quot;</span><span class="va">$TASK_PID</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">rc</span><span class="op">=</span>0<span class="kw">;</span> <span class="cf">else</span> <span class="va">rc</span><span class="op">=</span><span class="va">$?</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="va">TASK_PID</span><span class="op">=</span><span class="st">&#39;&#39;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="st">&quot;</span><span class="va">$rc</span><span class="st">&quot;</span></span></code></pre></div>
+<p>The final <code>wait</code> preserves the command’s actual exit
+status. Completed, failed, and cancelled tasks can therefore produce
+different status messages instead of all appearing successful.</p>
+<h2 id="prefetch-before-opening-the-interface">Prefetch before opening
+the interface</h2>
+<p>This excerpt shows the startup work order:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">task_invoke</span> <span class="st">&#39;Loading profiles&#39;</span> load_profiles</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">refresh_mount_cache</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">refresh_domain_cache</span></span></code></pre></div>
+<p>During prefetch, progress is drawn in the ordinary terminal. After it
+finishes, the script clears that screen and opens the full interface.
+Drawing the interface uses cached mount data for responsiveness;
+connect, disconnect, and refresh update it.</p>
+<h2 id="authenticated-share-enumeration">Authenticated share
+enumeration</h2>
+<p>Share browsing invokes <code>smbclient</code> with a temporary
+credentials file and requires encrypted SMB3. It filters the
+machine-readable output to disk shares, preserves spaces in names,
+removes duplicates, and excludes IPC and printer entries. Returned
+hidden shares ending in <code>$</code> are labelled; the server may not
+reveal every hidden share to the account.</p>
+<h2 id="mount-protection">Mount protection</h2>
+<p>Mount options include the user’s Linux UID/GID, a selected SMB3
+dialect, <code>seal</code>, <code>sec=ntlmssp</code>,
+<code>nosuid</code>, <code>nodev</code>, file mode <code>0600</code>,
+and directory mode <code>0700</code>. Windows permissions still
+determine remote access.</p>
+<p>Before mounting, simba rejects a symlink or a nonempty mount
+directory. Before unmounting, it verifies that the mounted filesystem
+and source match the selected profile. A busy mount reports an error;
+the script does not force or lazily detach it.</p>
+<h2 id="preserving-the-menu">Preserving the menu</h2>
+<p>Runtime dialogs are drawn as overlays inside the existing terminal
+buffer. They do not clear the entire screen or switch alternate-screen
+buffers while open. Closing an overlay redraws the interface, preserving
+the top menu and both panels. Bootstrap dependency dialogs are handled
+separately before the full interface starts.</p>
+<h1 id="credentials-and-saved-data">Credentials and saved data</h1>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Location</th>
+<th style="text-align: left;">Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>~/.config/windows-drive-ide/</code></td>
+<td style="text-align: left;">Saved profiles and the instance lock;
+historical directory name retained for compatibility</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>&lt;folder-ID&gt;.drive</code></td>
+<td style="text-align: left;">Seven lines: folder ID, display name,
+server, share, domain, username, SMB dialect</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>~/NetworkDrives/&lt;folder-ID&gt;</code></td>
+<td style="text-align: left;">Local mount directory</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>/tmp/simba.XXXXXXXX/</code></td>
+<td style="text-align: left;">Private session files and temporary
+credentials</td>
+</tr>
+</tbody>
+</table>
+<p>Passwords are not saved in drive profiles or passed as command-line
+password arguments. Temporary credential files use mode
+<code>0600</code>; they are removed after connection attempts and during
+normal cleanup. A forced process kill or system crash can prevent
+cleanup, so temporary-file deletion is not a guarantee of secure
+erasure.</p>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Symptom</th>
+<th style="text-align: left;">What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">No domains found</td>
+<td style="text-align: left;">Office/VPN connectivity, internal DNS, and
+the domain suffix. Try a manual full DNS domain in G.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Domain found but no storage listed</td>
+<td style="text-align: left;">B needs a specific file server. Finding
+controllers does not enumerate all storage.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Authentication rejected</td>
+<td style="text-align: left;">Windows username, account domain,
+password, and permissions. No anonymous retry is attempted.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Connection fails</td>
+<td style="text-align: left;">Server address, share name, VPN routing,
+Windows permissions, and SMB3 encryption support.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mount directory rejected</td>
+<td style="text-align: left;">Use the intended empty directory; do not
+hide existing files under a new mount.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Disconnect says busy</td>
+<td style="text-align: left;">Close files, file-manager windows, and
+shells using that mount, then retry.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Blue panel or cyan highlight</td>
+<td style="text-align: left;">These are the Commander-style interface
+colors and active selection.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gaps or broken borders</td>
+<td style="text-align: left;">Use a monospace terminal font with
+box-drawing support and at least 100 × 24 cells.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Menu disappears</td>
+<td style="text-align: left;">Use version 3.0.1 with native overlays;
+resize to a supported terminal size and refresh.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mounted status seems stale</td>
+<td style="text-align: left;">Press R. “Mounted” reflects the local
+mount table, not a live server-health test.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Folder will not open</td>
+<td style="text-align: left;">Check <code>xdg-open</code> and that a
+graphical desktop session is available.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="simulated-domain-and-share-testing">Simulated domain and share
+testing</h1>
+<p><strong>Offline simulations passed during development. Live
+Windows/Active Directory validation remains pending.</strong> The tests
+substituted controlled responses for DNS, SMB, sudo, mount, and unmount
+operations. They did not contact a real domain, install real packages,
+or create real network mounts.</p>
+<h2 id="test-environment">Test environment</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Fixture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Domain</td>
+<td style="text-align: left;"><code>corp.example.test</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Controllers</td>
+<td style="text-align: left;"><code>dc01.corp.example.test</code>,
+<code>dc02.corp.example.test</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">File server</td>
+<td style="text-align: left;"><code>fs01.corp.example.test</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Disk shares</td>
+<td style="text-align: left;"><code>Shared</code>,
+<code>Engineering Shared</code>, <code>GIS</code>,
+<code>Finance$</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Extra entries</td>
+<td style="text-align: left;">IPC and printer entries, which must be
+excluded</td>
+</tr>
+</tbody>
+</table>
+<h2 id="results">Results</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Test area</th>
+<th style="text-align: left;">Verified result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bash syntax</td>
+<td style="text-align: left;"><code>bash -n simba.sh</code> passed.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Domain discovery</td>
+<td style="text-align: left;">One valid domain from two candidates; two
+controller records retained; unavailable DNS handled.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Share browsing</td>
+<td style="text-align: left;">Four disk shares retained; IPC and
+printers filtered; names with spaces preserved.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Browse → profile → mount</td>
+<td style="text-align: left;">Selected share saved correctly and passed
+to a mocked encrypted mount.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Disconnect</td>
+<td style="text-align: left;">Busy unmount reported; later successful
+unmount handled; mismatched sources rejected.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Failure paths</td>
+<td style="text-align: left;">Rejected logon, denied mount, cancelled
+input, and empty share results handled without connecting an unrelated
+profile.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Credentials</td>
+<td style="text-align: left;">Private file permissions and cleanup
+checked; password absent from profile and diagnostic outputs checked by
+the fixtures.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dependency setup</td>
+<td style="text-align: left;">Duplicate packages, declined setup,
+missing sudo, apt refresh failure, install failure, and recheck paths
+simulated.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Progress</td>
+<td style="text-align: left;">Measured steps, animated waits, separate
+outputs, and nonzero exit status preservation checked.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Startup</td>
+<td style="text-align: left;">Prefetch before the interface, cached
+discovery, and mount refresh checked.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Terminal behavior</td>
+<td style="text-align: left;">Actual pseudo-terminal tests at 24 and 28
+rows checked navigation, form editing, hidden passwords, Help scrolling,
+popup overlays, menu redraw, and clean exit.</td>
+</tr>
+</tbody>
+</table>
+<p>These tests exercise control flow and terminal rendering. They cannot
+establish compatibility with an organization’s real DNS, authentication
+policies, SMB server, VPN, or Windows ACLs. The next validation step is
+an authorized live test: discover a known domain, browse a known file
+server, mount a permitted share, open a file appropriate to the account,
+and disconnect cleanly.</p>
+<h1 id="revision-history">Revision history</h1>
+<p>All script entries below are dated <strong>17 October 2026</strong>.
+Documentation created <strong>18 October 2026</strong>.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Change</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3.0.1</td>
+<td style="text-align: left;">Comment separators and expanded authorship
+header</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3.0.0</td>
+<td style="text-align: left;">Native overlay popups preserve the menu
+and panels</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2.4.1</td>
+<td style="text-align: left;">Restored full-screen buffer after external
+dialogs; superseded by native overlays</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.4.0</td>
+<td style="text-align: left;">Terminal startup prefetch</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2.3.0</td>
+<td style="text-align: left;">Task status, measured progress, and
+animated waits</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.2.2</td>
+<td style="text-align: left;">Reset colors after leaving the alternate
+screen</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2.2.1</td>
+<td style="text-align: left;">Sized, scrollable Help viewer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.2.0</td>
+<td style="text-align: left;">Letter shortcuts and joined double-line
+dividers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2.1.1</td>
+<td style="text-align: left;">Clear exit screen, goodbye message, and
+comments</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.1.0</td>
+<td style="text-align: left;">Dependency setup and simba name</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2.0.1</td>
+<td style="text-align: left;">Earlier smbnav name</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.0.0</td>
+<td style="text-align: left;">Norton Commander layout and dual
+panels</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1.2.0</td>
+<td style="text-align: left;">Authenticated share browsing and profile
+creation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1.1.0</td>
+<td style="text-align: left;">DNS domain discovery</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1.0.0</td>
+<td style="text-align: left;">Initial terminal interface, profiles, and
+SMB3 mounts</td>
+</tr>
+</tbody>
+</table>
+<footer class="page-footer">simba 3.0.1 · Teo Espero · Documentation: 18 October 2026</footer>
+</main>
+</body>
+</html>
