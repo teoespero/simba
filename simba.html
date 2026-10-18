@@ -5,146 +5,8 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Teo Espero" />
-  <title>simba — User and testing guide</title>
+  <title>simba — Code and VM testing guide</title>
   <style>
-html {
-color: #1a1a1a;
-background-color: #fdfdfd;
-}
-body {
-margin: 0 auto;
-max-width: none;
-padding: 0;
-hyphens: auto;
-overflow-wrap: break-word;
-text-rendering: optimizeLegibility;
-font-kerning: normal;
-}
-@media (max-width: 600px) {
-body {
-font-size: 0.9em;
-padding: 0;
-}
-h1 {
-font-size: 1.8em;
-}
-}
-@media print {
-html {
-background-color: white;
-}
-body {
-background-color: transparent;
-color: black;
-font-size: 12pt;
-}
-p, h2, h3 {
-orphans: 3;
-widows: 3;
-}
-h2, h3, h4 {
-page-break-after: avoid;
-}
-}
-p {
-margin: 1em 0;
-}
-a {
-color: #1a1a1a;
-}
-a:visited {
-color: #1a1a1a;
-}
-img {
-max-width: 100%;
-}
-h1, h2, h3, h4, h5, h6 {
-margin-top: 1.4em;
-}
-h5, h6 {
-font-size: 1em;
-font-style: italic;
-}
-h6 {
-font-weight: normal;
-}
-ol, ul {
-padding-left: 1.7em;
-margin-top: 1em;
-}
-li > ol, li > ul {
-margin-top: 0;
-}
-blockquote {
-margin: 1em 0 1em 1.7em;
-padding-left: 1em;
-border-left: 2px solid #e6e6e6;
-color: #606060;
-}
-code {
-font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-font-size: 85%;
-margin: 0;
-hyphens: manual;
-}
-pre {
-margin: 1em 0;
-overflow: auto;
-}
-pre code {
-padding: 0;
-overflow: visible;
-overflow-wrap: normal;
-}
-.sourceCode {
-background-color: transparent;
-overflow: visible;
-}
-hr {
-background-color: #1a1a1a;
-border: none;
-height: 1px;
-margin: 1em 0;
-}
-table {
-margin: 1em 0;
-border-collapse: collapse;
-width: 100%;
-overflow-x: auto;
-display: block;
-font-variant-numeric: lining-nums tabular-nums;
-}
-table caption {
-margin-bottom: 0.75em;
-}
-tbody {
-margin-top: 0.5em;
-border-top: 1px solid #1a1a1a;
-border-bottom: 1px solid #1a1a1a;
-}
-th {
-border-top: 1px solid #1a1a1a;
-padding: 0.25em 0.5em 0.25em 0.5em;
-}
-td {
-padding: 0.125em 0.5em 0.25em 0.5em;
-}
-header {
-margin-bottom: 4em;
-text-align: center;
-}
-#TOC li {
-list-style: none;
-}
-#TOC ul {
-padding-left: 1.3em;
-}
-#TOC > ul {
-padding-left: 0;
-}
-#TOC a:not(:hover) {
-text-decoration: none;
-}
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -224,20 +86,99 @@ code span.va { color: #19177c; }
 code span.vs { color: #4070a0; } 
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
-  <style>
-:root{color-scheme:light;--ink:#173a40;--teal:#087e83;--line:#cce1df;--paper:#fff;--muted:#526d71}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:2rem}body{margin:0;background:#eef6f4;color:var(--ink);font:17px/1.7 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body>header,body>nav,body>main{max-width:1050px;margin:auto}header#title-block-header{max-width:none;background:linear-gradient(120deg,#063a42,#086c70);color:white;padding:64px max(28px,calc((100vw - 1000px)/2));border-bottom:7px solid #35c4b0}header .title{font-size:clamp(2rem,5vw,3.4rem);line-height:1.15;margin:0 0 22px;letter-spacing:-.045em}header p{color:#d6eeea;margin:5px 0}main{padding:36px 42px 70px;background:var(--paper);box-shadow:0 10px 50px #173a4009}h1{font-size:1.85rem;border-top:1px solid var(--line);padding-top:30px;margin-top:42px;line-height:1.3;letter-spacing:-.025em}main>h1:first-child{border:0;padding:0;margin-top:0}h2{font-size:1.25rem;margin-top:30px;color:#075e64}a{color:#08777d;text-underline-offset:3px}a:hover{color:#03434b}p,ul,ol{margin:15px 0}li{padding-left:4px;margin:6px 0}strong{color:#075d64}header strong{color:inherit}table{border-collapse:collapse;width:100%;margin:23px 0;font-size:.94rem;line-height:1.55;display:block;overflow:auto}thead{background:#0a666d;color:white}th{text-align:left;font-weight:650}td,th{padding:13px 17px;vertical-align:top;border-bottom:1px solid var(--line)}tbody tr:nth-child(even){background:#f0f8f6}td:first-child{min-width:150px;font-weight:550}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.87em;background:#e9f3f1;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#102f36;color:#e0f4ed;padding:23px;border-left:4px solid #27bda8;border-radius:6px;overflow-x:auto;line-height:1.6}pre code{background:none;padding:0;color:inherit;overflow-wrap:normal}div.sourceCode{margin:22px 0}.sourceCode span.co{color:#9bc7be}.sourceCode span.st{color:#a7e5be}.sourceCode span.kw,.sourceCode span.cf{color:#70d8da}.contents{background:#eaf7f3;border:1px solid #c9e3dd;border-radius:8px;padding:19px 25px;margin:30px 0}.contents h2{margin:0 0 12px}.contents ul{columns:2;padding-left:20px;margin:0}.contents li{break-inside:avoid;margin:5px 0}.contents a{text-decoration:none}.page-footer{border-top:1px solid var(--line);margin-top:45px;padding-top:20px;font-size:.85rem;color:var(--muted)}:focus-visible{outline:3px solid #18a68f;outline-offset:4px}
-@media(max-width:650px){body{font-size:16px}header#title-block-header{padding:38px 22px}main{padding:25px 20px 45px}.contents ul{columns:1}h1{font-size:1.55rem}td,th{padding:10px 12px}pre{padding:17px;font-size:.9rem}}
-@media print{body{background:white;font-size:10pt}header#title-block-header{background:white;color:#173a40;padding:10px 0 20px;border-bottom:2px solid #087e83}header p{color:#526d71}main{max-width:none;padding:10px 0;box-shadow:none}h1,h2{break-after:avoid}tr,pre{break-inside:avoid}pre{white-space:pre-wrap;background:#f0f5f4;color:#173a40}a{color:inherit}.contents{background:white}table{display:table;font-size:9pt}}
+  <style type="text/css">
+:root{--teal:#087e83;--ink:#183b40;--muted:#516d72;--line:#c9dedb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#edf5f3;color:var(--ink);font:17px/1.75 system-ui,-apple-system,sans-serif;overflow-wrap:break-word}
+header,main,nav#TOC{max-width:1120px;margin:auto;padding:30px 48px;background:white}header{background:#103e45;color:white;border-top:9px solid #21b6a4;padding-top:48px;padding-bottom:38px}header h1{color:white;margin:0 0 15px;font-size:2.5rem;line-height:1.2}header p{margin:5px 0;color:#bde4dc}nav#TOC{background:#dff0eb;border-bottom:1px solid var(--line)}nav#TOC ul{columns:2;padding-left:22px}nav#TOC li{break-inside:avoid}main{padding-top:35px;padding-bottom:70px}h1,h2,h3{line-height:1.3;scroll-margin-top:20px}main h1{font-size:1.9rem;color:#075f66;border-bottom:2px solid #29ac9e;margin-top:55px;padding-bottom:12px}h2{font-size:1.35rem;margin-top:34px;color:#076e75}h3{font-size:1.1rem}a{color:#006d75}table{border-collapse:collapse;width:100%;margin:24px 0;font-size:.92rem}th{background:#0d6970;color:white;text-align:left}td,th{padding:12px 15px;border:1px solid var(--line);vertical-align:top}tbody tr:nth-child(even){background:#f1f7f5}pre{background:#102f36;color:#e0f4ed;padding:22px;border-radius:7px;border-left:4px solid #26bda8;overflow:auto;line-height:1.6;font-size:.86rem}code{font-family:ui-monospace,monospace}p code,td code,li code{background:#e9f3f0;padding:2px 5px;border-radius:3px;overflow-wrap:anywhere}figure{margin:20px 0 35px}img{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px}figcaption{color:var(--muted);font-size:.92rem;margin-top:10px}pre code{white-space:pre}footer{max-width:1120px;margin:auto;padding:20px 48px;background:#103e45;color:#c5e5de}
+@media(max-width:700px){body{font-size:16px}header,main,nav#TOC{padding:24px 18px}header h1{font-size:2rem}nav#TOC ul{columns:1}table{display:block;overflow:auto}td,th{min-width:145px}pre{padding:14px;font-size:.8rem}}
+@media print{body{background:white;font-size:10pt}header,main,nav#TOC{max-width:none;padding:12px}header{background:white;color:#173b40}header h1,header p{color:#173b40}nav#TOC ul{columns:2}pre{white-space:pre-wrap;background:#edf5f3;color:#173b40}pre code{white-space:pre-wrap}figure,tr{break-inside:avoid}footer{background:white;color:#173b40}}
 </style>
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">simba — SMB shares navigator</h1>
+<h1 class="title">simba — Code and VM testing guide</h1>
 <p class="author">Teo Espero</p>
-<p class="date">Documentation: 18 October 2026 · Script: 3.0.1</p>
+<p class="date">Documentation: 18 October 2026 · Script: 3.0.2</p>
 </header>
-<main id="main-content">
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#about-simba" id="toc-about-simba">About simba</a></li>
+<li><a href="#capabilities" id="toc-capabilities">Capabilities</a></li>
+<li><a href="#requirements-and-setup" id="toc-requirements-and-setup">Requirements and setup</a></li>
+<li><a href="#startup-and-discovery" id="toc-startup-and-discovery">Startup and discovery</a>
+<ul>
+<li><a href="#what-happens-on-ordinary-wifi" id="toc-what-happens-on-ordinary-wifi">What happens on ordinary
+WiFi?</a></li>
+</ul></li>
+<li><a href="#interface-and-controls" id="toc-interface-and-controls">Interface and controls</a></li>
+<li><a href="#connecting-a-shared-drive" id="toc-connecting-a-shared-drive">Connecting a shared drive</a></li>
+<li><a href="#code-walkthrough" id="toc-code-walkthrough">Code
+walkthrough</a>
+<ul>
+<li><a href="#section-comments-and-private-defaults" id="toc-section-comments-and-private-defaults">Section comments and
+private defaults</a></li>
+<li><a href="#keeping-progress-out-of-command-results" id="toc-keeping-progress-out-of-command-results">Keeping progress out of
+command results</a></li>
+<li><a href="#prefetch-before-opening-the-interface" id="toc-prefetch-before-opening-the-interface">Prefetch before opening
+the interface</a></li>
+<li><a href="#authenticated-share-enumeration" id="toc-authenticated-share-enumeration">Authenticated share
+enumeration</a></li>
+<li><a href="#mount-protection" id="toc-mount-protection">Mount
+protection</a></li>
+<li><a href="#preserving-the-menu" id="toc-preserving-the-menu">Preserving the menu</a></li>
+<li><a href="#why-build-this-when-ubuntu-already-has-tools" id="toc-why-build-this-when-ubuntu-already-has-tools">Why build this
+when Ubuntu already has tools?</a></li>
+<li><a href="#dependency-detection-and-installation" id="toc-dependency-detection-and-installation">Dependency detection and
+installation</a></li>
+<li><a href="#domain-controller-query" id="toc-domain-controller-query">Domain-controller query</a></li>
+<li><a href="#the-smb-browse-command" id="toc-the-smb-browse-command">The SMB browse command</a></li>
+<li><a href="#mount-options-and-connection" id="toc-mount-options-and-connection">Mount options and
+connection</a></li>
+<li><a href="#terminal-size-handling-in-version-3.0.2" id="toc-terminal-size-handling-in-version-3.0.2">Terminal-size handling
+in version 3.0.2</a></li>
+</ul></li>
+<li><a href="#credentials-and-saved-data" id="toc-credentials-and-saved-data">Credentials and saved data</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">Troubleshooting</a></li>
+<li><a href="#simulated-domain-and-share-testing" id="toc-simulated-domain-and-share-testing">Simulated domain and share
+testing</a>
+<ul>
+<li><a href="#test-environment" id="toc-test-environment">Test
+environment</a></li>
+<li><a href="#results" id="toc-results">Results</a></li>
+</ul></li>
+<li><a href="#vm-testing" id="toc-vm-testing">VM testing: setup, issues,
+fixes, and results</a>
+<ul>
+<li><a href="#lab-setup" id="toc-lab-setup">Lab setup</a></li>
+<li><a href="#script-transfer-and-ssh" id="toc-script-transfer-and-ssh">1. Script transfer and SSH</a></li>
+<li><a href="#startup-terminal-errors-and-the-3.0.2-fix" id="toc-startup-terminal-errors-and-the-3.0.2-fix">2. Startup terminal
+errors and the 3.0.2 fix</a></li>
+<li><a href="#dns-query-spelling-and-guest-network-mismatch" id="toc-dns-query-spelling-and-guest-network-mismatch">3. DNS query
+spelling and guest network mismatch</a></li>
+<li><a href="#authenticated-share-browsing-and-mounting" id="toc-authenticated-share-browsing-and-mounting">4. Authenticated
+share browsing and mounting</a></li>
+<li><a href="#open-folder-behavior-on-ubuntu-server" id="toc-open-folder-behavior-on-ubuntu-server">5. Open-folder behavior
+on Ubuntu Server</a></li>
+<li><a href="#issue-and-fix-summary" id="toc-issue-and-fix-summary">Issue and fix summary</a></li>
+<li><a href="#observed-live-results" id="toc-observed-live-results">Observed live results</a></li>
+<li><a href="#next-validation-steps" id="toc-next-validation-steps">Next
+validation steps</a></li>
+</ul></li>
+<li><a href="#screenshot-record" id="toc-screenshot-record">Screenshot
+record</a>
+<ul>
+<li><a href="#batch-1-installation-and-configuration" id="toc-batch-1-installation-and-configuration">Batch 1: installation
+and configuration</a></li>
+<li><a href="#batch-2-transfer-startup-and-dns-troubleshooting" id="toc-batch-2-transfer-startup-and-dns-troubleshooting">Batch 2:
+transfer, startup, and DNS troubleshooting</a></li>
+<li><a href="#batch-3-successful-discovery-and-share-access" id="toc-batch-3-successful-discovery-and-share-access">Batch 3:
+successful discovery and share access</a></li>
+</ul></li>
+<li><a href="#revision-history" id="toc-revision-history">Revision
+history</a></li>
+</ul>
+</nav>
+<main>
 <h1 id="about-simba">About simba</h1>
 <p><strong>simba</strong> is a Bash terminal application for discovering
 Windows domain hints, browsing SMB file shares, and connecting saved
@@ -246,25 +187,10 @@ takes inspiration from Norton Commander. It uses letter shortcuts,
 status messages, progress indicators, and keyboard-operated overlay
 dialogs.</p>
 <p><strong>Author:</strong> Teo Espero. <strong>Script version:</strong>
-3.0.1. <strong>Script created and last updated:</strong> 17 October
-2026. This guide describes the current script and the offline tests
-performed during development.</p>
-<nav class="contents" aria-label="Contents"><h2 id="contents">Contents</h2>
-<ul>
-<li><a href="#capabilities">Capabilities</a></li>
-<li><a href="#requirements-and-setup">Requirements and setup</a></li>
-<li><a href="#startup-and-discovery">Startup and discovery</a></li>
-<li><a href="#interface-and-controls">Interface and controls</a></li>
-<li><a href="#connecting-a-shared-drive">Connecting a shared
-drive</a></li>
-<li><a href="#code-walkthrough">Code walkthrough</a></li>
-<li><a href="#credentials-and-saved-data">Credentials and saved
-data</a></li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#simulated-domain-and-share-testing">Simulated domain and
-share testing</a></li>
-<li><a href="#revision-history">Revision history</a></li>
-</ul></nav>
+3.0.2. <strong>Created:</strong> 17 October 2026.
+<strong>Updated:</strong> 18 October 2026. This guide covers the code
+first, followed by offline simulations and the Windows/Ubuntu VM test,
+including issues, fixes, results, and screenshots.</p>
 <h1 id="capabilities">Capabilities</h1>
 <table>
 <colgroup>
@@ -549,7 +475,9 @@ username.</li>
 <strong>C</strong> to save and connect.</li>
 <li>Supply the local sudo password if requested and the Windows password
 for the connection.</li>
-<li>Press <strong>O</strong> to open the mounted folder. Close open
+<li>On a graphical desktop, press <strong>O</strong> to request opening
+the mounted folder. On Ubuntu Server without a desktop, use
+<code>cd</code> and <code>ls</code> in the terminal instead. Close open
 files before using <strong>D</strong> to disconnect.</li>
 </ol>
 <p>The example names above are fictional test data. A successful browse
@@ -625,6 +553,149 @@ buffer. They do not clear the entire screen or switch alternate-screen
 buffers while open. Closing an overlay redraws the interface, preserving
 the top menu and both panels. Bootstrap dependency dialogs are handled
 separately before the full interface starts.</p>
+<h2 id="why-build-this-when-ubuntu-already-has-tools">Why build this
+when Ubuntu already has tools?</h2>
+<p>Ubuntu Files can connect to an <code>smb://</code> address, Double
+Commander supplies a two-panel file manager, and <code>smbclient</code>
+browses shares from the command line. simba brings domain hints, share
+browsing, saved profiles, connect/disconnect controls, dependency
+checks, and task status together. It uses established Linux tools
+underneath. It is a connection manager rather than a full file
+manager.</p>
+<h2 id="dependency-detection-and-installation">Dependency detection and
+installation</h2>
+<p>The following function is copied from version 3.0.2. Entries map
+commands to packages. <code>${entry%%:*}</code> keeps the command and
+<code>${entry#*:}</code> keeps the package. The associative array avoids
+requesting one package several times when multiple commands are
+missing.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_missing_dependencies()</span> <span class="kw">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">entry</span> <span class="va">cmd</span> <span class="va">package</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="at">-A</span> <span class="va">seen_packages</span><span class="op">=</span><span class="va">()</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="at">-a</span> <span class="va">requirements</span><span class="op">=</span><span class="va">(</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        sudo:sudo dialog:dialog mount.cifs:cifs-utils dig:dnsutils</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        smbclient:smbclient xdg-open:xdg-utils</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        findmnt:util-linux flock:util-linux mount:mount umount:mount</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        find:findutils awk:gawk</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        stty:coreutils mktemp:coreutils timeout:coreutils sort:coreutils</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        head:coreutils wc:coreutils tr:coreutils cat:coreutils sleep:coreutils</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        rm:coreutils mv:coreutils mkdir:coreutils chmod:coreutils id:coreutils</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">MISSING_COMMANDS</span><span class="op">=</span><span class="va">()</span><span class="kw">;</span> <span class="va">MISSING_PACKAGES</span><span class="op">=</span><span class="va">()</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> entry <span class="kw">in</span> <span class="st">&quot;</span><span class="va">${requirements</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">cmd</span><span class="op">=</span><span class="va">${entry</span><span class="op">%%</span>:<span class="pp">*</span><span class="va">}</span><span class="kw">;</span> <span class="va">package</span><span class="op">=</span><span class="va">${entry</span><span class="op">#</span><span class="pp">*</span>:<span class="va">}</span> <span class="co"># Split command:package without external tools.</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="ex">command_available</span> <span class="st">&quot;</span><span class="va">$cmd</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="cf">continue</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">MISSING_COMMANDS</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;</span><span class="va">$cmd</span><span class="st">&quot;</span><span class="va">)</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ------------------------------------</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Several commands belong to coreutils/util-linux: install each package</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># once even if more than one of its commands is missing.</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ------------------------------------</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-z</span> <span class="va">${seen_packages</span><span class="op">[</span><span class="va">$package</span><span class="op">]+</span>present<span class="va">}</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            <span class="va">seen_packages</span><span class="op">[</span><span class="va">$package</span><span class="op">]=</span>1<span class="kw">;</span> <span class="va">MISSING_PACKAGES</span><span class="op">+=</span><span class="va">(</span><span class="st">&quot;</span><span class="va">$package</span><span class="st">&quot;</span><span class="va">)</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">fi</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>After confirmation, setup authenticates with <code>sudo -v</code>,
+refreshes repositories, installs the collected packages, and rechecks
+commands. The installation function stops if authentication, refresh, or
+installation fails:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_dependency_packages()</span> <span class="kw">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&#39;\nsimba: administrator permission is needed to install packages.\n&#39;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sudo</span> <span class="at">-v</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">printf</span> <span class="st">&#39;Administrator authentication failed or was cancelled.\n&#39;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="cf">return</span> <span class="dv">1</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&#39;\nsimba setup [1/3]: refreshing package lists (download progress below)...\n&#39;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">bootstrap_progress</span> 0 <span class="st">&#39;Refreshing package lists&#39;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># -n reuses sudo authorization. Error-Mode=any makes a failed repository</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># refresh stop setup instead of continuing with an incomplete update.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sudo</span> <span class="at">-n</span> apt-get <span class="at">-o</span> APT::Update::Error-Mode=any update <span class="kw">||</span> <span class="kw">{</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">printf</span> <span class="st">&#39;\nPackage refresh failed. Check your connection or package repositories, then run simba again.\n&#39;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&#39;\nsimba setup [2/3]: installing missing packages (package progress below)...\n&#39;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">bootstrap_progress</span> 1 <span class="st">&#39;Installing packages&#39;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sudo</span> <span class="at">-n</span> apt-get install <span class="at">--assume-yes</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">${MISSING_PACKAGES</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="kw">{</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">printf</span> <span class="st">&#39;\nPackage installation failed. Review the package manager output above, then run simba again.\n&#39;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Automatic installation needs repository connectivity. For an isolated
+VM network, install dependencies before removing internet access, or
+provide an appropriate repository route. Installing
+<code>xdg-utils</code> does not provide a desktop or graphical file
+manager.</p>
+<h2 id="domain-controller-query">Domain-controller query</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">query_controllers()</span> <span class="kw">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">domain</span><span class="op">=</span><span class="va">$1</span> <span class="va">priority</span> <span class="va">weight</span> <span class="va">port</span> <span class="va">host</span> <span class="va">rest</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">valid_dns_name</span> <span class="st">&quot;</span><span class="va">$domain</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A trailing dot prevents the resolver appending any search suffix.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># timeout bounds one lookup even when DNS/VPN is unavailable.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">priority</span> <span class="va">weight</span> <span class="va">port</span> <span class="va">host</span> <span class="va">rest</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ------------------------------------</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># SRV fields are priority, weight, port and target hostname. Reject</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># malformed output and accept only LDAP domain-controller records.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ------------------------------------</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">[[</span> <span class="va">$priority</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">+</span><span class="op">$</span> <span class="kw">&amp;&amp;</span> <span class="va">$weight</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">+</span><span class="op">$</span> <span class="kw">&amp;&amp;</span> <span class="va">$port</span> <span class="ot">==</span> 389 <span class="kw">&amp;&amp;</span> <span class="ot">-z</span> <span class="va">$rest</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="cf">continue</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">host</span><span class="op">=</span><span class="va">${host</span><span class="op">%</span>.<span class="va">}</span><span class="kw">;</span> <span class="va">host</span><span class="op">=</span><span class="va">${host</span><span class="op">,,</span><span class="va">}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="ex">valid_dns_name</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="bu">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Process substitution feeds DNS output into read without creating a file.</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only record contents are parsed; no DNS response is executed as code.</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ------------------------------------</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="fu">timeout</span> 6 dig +time=2 +tries=1 +short SRV <span class="st">&quot;_ldap._tcp.dc._msdcs.</span><span class="va">$domain</span><span class="st">.&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="op">)</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>The SRV parser accepts numeric priority and weight, LDAP port 389,
+and a valid target hostname. It trims the final dot, normalizes case,
+and removes duplicates. The query’s trailing dot prevents search-suffix
+expansion; timeouts bound the wait. DNS records provide discovery hints
+rather than authenticated server identity. Discovery does not scan every
+network address or join Active Directory.</p>
+<h2 id="the-smb-browse-command">The SMB browse command</h2>
+<p>The following excerpt uses a temporary credentials file rather than a
+password argument. <code>-g</code> requests parseable output,
+<code>-L</code> requests the server’s shares, encryption is required,
+and SMB3 is the minimum protocol. This password flow disables
+ticket-cache Kerberos. The outer timeout bounds the request.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">run_with_progress</span> <span class="st">&quot;</span><span class="va">$RUN_DIR</span><span class="st">/browse-output&quot;</span> <span class="st">&quot;</span><span class="va">$RUN_DIR</span><span class="st">/browse-error&quot;</span> <span class="dt">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    timeout <span class="at">--kill-after</span><span class="op">=</span>2 25 smbclient <span class="at">-g</span> <span class="at">-L</span> <span class="st">&quot;</span><span class="va">$server</span><span class="st">&quot;</span> <span class="dt">\</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-A</span> <span class="st">&quot;</span><span class="va">$credentials</span><span class="st">&quot;</span> <span class="at">--client-protection</span><span class="op">=</span>encrypt <span class="at">-m</span> SMB3 <span class="dt">\</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--option</span><span class="op">=</span><span class="st">&#39;client min protocol=SMB3&#39;</span> <span class="at">--use-kerberos</span><span class="op">=</span>off <span class="at">-t</span> 8 <span class="kw">||</span> <span class="va">rc</span><span class="op">=</span><span class="va">$?</span></span></code></pre></div>
+<h2 id="mount-options-and-connection">Mount options and connection</h2>
+<p>The current connection code builds these options and invokes
+<code>mount</code> after separate sudo authorization:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">options</span><span class="op">=</span><span class="st">&quot;credentials=</span><span class="va">$credentials</span><span class="st">,uid=</span><span class="va">$(</span><span class="fu">id</span> <span class="at">-u</span><span class="va">)</span><span class="st">,gid=</span><span class="va">$(</span><span class="fu">id</span> <span class="at">-g</span><span class="va">)</span><span class="st">,vers=</span><span class="va">${DIALECTS</span><span class="op">[</span>SELECTED<span class="op">]</span><span class="va">}</span><span class="st">,seal,sec=ntlmssp,nosuid,nodev,file_mode=0600,dir_mode=0700&quot;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-n</span> mount <span class="at">-t</span> cifs <span class="st">&quot;//</span><span class="va">${SERVERS</span><span class="op">[</span>SELECTED<span class="op">]</span><span class="va">}</span><span class="st">/</span><span class="va">${SHARES</span><span class="op">[</span>SELECTED<span class="op">]</span><span class="va">}</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$p</span><span class="st">&quot;</span> <span class="at">-o</span> <span class="st">&quot;</span><span class="va">$options</span><span class="st">&quot;</span></span></code></pre></div>
+<p><code>uid</code>/<code>gid</code> associate local ownership with the
+current user, <code>vers</code> selects the configured dialect,
+<code>seal</code> requires encryption, and <code>sec=ntlmssp</code>
+selects authentication. <code>nosuid</code>/<code>nodev</code> restrict
+special local behavior. Local modes do not grant Windows permissions;
+the server still enforces share and filesystem access. <code>$p</code>
+is the selected local mount directory.</p>
+<h2 id="terminal-size-handling-in-version-3.0.2">Terminal-size handling
+in version 3.0.2</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">terminal_size()</span> <span class="kw">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">dimensions</span><span class="op">=</span><span class="st">&#39;&#39;</span> <span class="va">rows</span><span class="op">=</span>0 <span class="va">cols</span><span class="op">=</span>0</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">dimensions</span><span class="op">=</span><span class="va">$(</span><span class="kw">{</span> <span class="fu">stty</span> size <span class="op">&lt;</span>/dev/tty<span class="kw">;</span> <span class="kw">}</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="va">)</span> <span class="kw">||</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">dimensions</span><span class="op">=</span><span class="va">$(</span><span class="fu">stty</span> size <span class="op">&lt;&amp;</span><span class="dv">2</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="va">)</span> <span class="kw">||</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">dimensions</span><span class="op">=</span><span class="va">$(</span><span class="fu">stty</span> size <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="va">)</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">read</span> <span class="at">-r</span> <span class="va">rows</span> <span class="va">cols</span> <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;</span><span class="va">$dimensions</span><span class="st">&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">[[</span> <span class="va">$rows</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">+</span><span class="op">$</span> <span class="kw">&amp;&amp;</span> <span class="va">$cols</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">+</span><span class="op">$</span> <span class="kw">]]</span> <span class="kw">&amp;&amp;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">((</span><span class="va">rows</span><span class="op">&gt;</span><span class="dv">0</span> <span class="kw">&amp;&amp;</span> <span class="va">cols</span><span class="op">&gt;</span><span class="dv">0</span><span class="kw">));</span> <span class="cf">then</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            <span class="bu">printf</span> <span class="st">&#39;%s %s\n&#39;</span> <span class="st">&quot;</span><span class="va">$rows</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$cols</span><span class="st">&quot;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">fi</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&#39;24 80\n&#39;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>The helper tries <code>/dev/tty</code> first so redirected worker
+input does not determine terminal geometry. It then tries stderr and
+stdin, validates positive numeric dimensions, and returns a fallback if
+none can be read. Callers still enforce the minimum 100 × 24 terminal
+size. This was the code change prompted by the VM startup errors
+described below.</p>
 <h1 id="credentials-and-saved-data">Credentials and saved data</h1>
 <table>
 <colgroup>
@@ -720,7 +791,7 @@ box-drawing support and at least 100 × 24 cells.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Menu disappears</td>
-<td style="text-align: left;">Use version 3.0.1 with native overlays;
+<td style="text-align: left;">Use version 3.0.2 with native overlays;
 resize to a supported terminal size and refresh.</td>
 </tr>
 <tr class="even">
@@ -737,8 +808,9 @@ graphical desktop session is available.</td>
 </table>
 <h1 id="simulated-domain-and-share-testing">Simulated domain and share
 testing</h1>
-<p><strong>Offline simulations passed during development. Live
-Windows/Active Directory validation remains pending.</strong> The tests
+<p><strong>Offline simulations passed during development. Live VM
+validation subsequently confirmed DNS discovery, authenticated share
+enumeration, mounting, and directory listing.</strong> The tests
 substituted controlled responses for DNS, SMB, sudo, mount, and unmount
 operations. They did not contact a real domain, install real packages,
 or create real network mounts.</p>
@@ -850,15 +922,603 @@ popup overlays, menu redraw, and clean exit.</td>
 </tr>
 </tbody>
 </table>
-<p>These tests exercise control flow and terminal rendering. They cannot
-establish compatibility with an organization’s real DNS, authentication
-policies, SMB server, VPN, or Windows ACLs. The next validation step is
-an authorized live test: discover a known domain, browse a known file
-server, mount a permitted share, open a file appropriate to the account,
-and disconnect cleanly.</p>
+<p>These tests exercise control flow and terminal rendering. Their
+results remain separate from the live VM observations below. They do not
+establish compatibility with every organization’s DNS, authentication
+policies, SMB server, VPN, or Windows ACLs. File read/write,
+restricted-share denial, and busy disconnect still require live VM
+validation.</p>
+<h1 id="vm-testing">VM testing: setup, issues, fixes, and results</h1>
+<h2 id="lab-setup">Lab setup</h2>
+<p>The live test used two KVM guests managed through virt-manager on the
+Ubuntu laptop. It was a separate lab, not a production domain. Windows
+handled both the domain-controller and file-server roles for this
+test.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Actual lab configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ubuntu guest</td>
+<td style="text-align: left;">Ubuntu Server; VM
+<code>simba-client</code>; user <code>support</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Windows guest</td>
+<td style="text-align: left;">Windows Server 2025 Datacenter Evaluation;
+VM <code>simba-server</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Windows hostname</td>
+<td style="text-align: left;"><code>DC01</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AD DNS domain</td>
+<td style="text-align: left;"><code>corp.simba.test</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Windows/DNS address</td>
+<td style="text-align: left;"><code>192.168.100.10</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ubuntu address</td>
+<td style="text-align: left;"><code>192.168.100.20/24</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ubuntu interface</td>
+<td style="text-align: left;"><code>enp1s0</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ubuntu DNS/search domain</td>
+<td style="text-align: left;"><code>192.168.100.10</code>;
+<code>corp.simba.test</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Intended guest network</td>
+<td style="text-align: left;"><code>simba-lab</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Windows account</td>
+<td style="text-align: left;"><code>CORP\simbauser</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Test shares</td>
+<td style="text-align: left;"><code>shared</code>,
+<code>engineering_shared</code>, <code>restricted</code>; encryption
+enabled</td>
+</tr>
+</tbody>
+</table>
+<p>The screenshot record below follows installation, configuration,
+transfer, troubleshooting, and successful access. Original filenames are
+retained beside every image.</p>
+<h2 id="script-transfer-and-ssh">1. Script transfer and SSH</h2>
+<p>The laptop initially could not copy the script:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> ~/Documents/bash-shell-scripts/simba/simba.sh <span class="dt">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    support@192.168.100.20:~/simba.sh</span></code></pre></div>
+<p>The result was <code>No route to host</code>. SSH was also inactive
+inside Ubuntu Server. These are separate conditions: starting SSH alone
+does not fix an unreachable network path.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run inside the Ubuntu guest to start and enable SSH.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable <span class="at">--now</span> ssh</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run on the laptop to inspect the guest network attachments.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> virsh domiflist simba-client</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> virsh domiflist simba-server</span></code></pre></div>
+<p>Both guests initially used <code>default</code> despite static
+addresses in the intended lab subnet. The laptop routed that subnet
+through the separate lab bridge. Correcting the Ubuntu attachment and
+enabling SSH allowed ping and SCP to succeed; the screenshot shows a
+completed 73 KB transfer. Assigning a static address does not attach a
+guest to the corresponding virtual network.</p>
+<h2 id="startup-terminal-errors-and-the-3.0.2-fix">2. Startup terminal
+errors and the 3.0.2 fix</h2>
+<p>Version 3.0.1 printed repeated
+<code>stty: &#39;standard input&#39;: Inappropriate ioctl for device</code>
+messages during preparation. Terminal geometry could be read from
+redirected input. Version 3.0.2 introduced the terminal-size helper
+shown above, starting with the controlling terminal. The later
+screenshots show the updated app running with its menus and progress
+display in place.</p>
+<p>The added pseudo-terminal checks exercised 24- and 28-row terminals,
+including redirected worker input. This verifies the helper behavior
+locally; the screenshots remain the evidence for the user’s VM
+session.</p>
+<h2 id="dns-query-spelling-and-guest-network-mismatch">3. DNS query
+spelling and guest network mismatch</h2>
+<p>Early commands included a missing period in the SRV name and
+<code>.text</code> instead of <code>.test</code>. Correcting those
+produced a valid response. Later, discovery failed again after moving
+only Ubuntu to <code>simba-lab</code> while Windows remained on
+<code>default</code>.</p>
+<p>The lookup used by discovery can be checked outside the app:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use Ubuntu&#39;s configured resolver.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dig</span> _ldap._tcp.dc._msdcs.corp.simba.test SRV +short</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Query the Windows DNS server directly.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">dig</span> @192.168.100.10 <span class="dt">\</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    _ldap._tcp.dc._msdcs.corp.simba.test SRV +time=2 +tries=1</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the DNS settings on Ubuntu Server.</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="ex">resolvectl</span> status enp1s0</span></code></pre></div>
+<p>Both resolver-based and direct queries timed out during the mismatch.
+<code>resolvectl</code> showed the intended DNS server and suffix, so
+correct configuration alone did not prove reachability.
+<code>127.0.0.53</code> in the first timeout was Ubuntu’s local stub
+resolver; it did not itself establish a resolver configuration
+fault.</p>
+<p>Putting both guests on <code>simba-lab</code> restored the
+response:</p>
+<pre class="text"><code>0 100 389 dc01.corp.simba.test.</code></pre>
+<p>simba then found one domain with one advertised controller record.
+Selecting it filled the account domain for subsequent profiles; the file
+server remained a separate field.</p>
+<h2 id="authenticated-share-browsing-and-mounting">4. Authenticated
+share browsing and mounting</h2>
+<p>The browse form used server <code>dc01</code>, domain
+<code>corp.simba.test</code>, and user <code>simbauser</code>.
+Authentication and encrypted SMB3 enumeration succeeded. The app
+displayed seven disk shares:</p>
+<pre class="text"><code>ADMIN$
+C$
+engineering_shared
+NETLOGON
+restricted
+shared
+SYSVOL</code></pre>
+<p><code>IPC$</code> was excluded from the disk-share panel. A returned
+share name does not establish permission to access its contents. The
+<code>restricted</code> share’s access-denial behavior has not yet been
+confirmed in the VM.</p>
+<p>The selected <code>engineering_shared</code> share became a saved
+profile and connected successfully. The interface reported
+<code>Mounted</code>, SMB <code>3.1.1</code>, and
+<code>/home/support/NetworkDrives/engineering_shared</code>.</p>
+<h2 id="open-folder-behavior-on-ubuntu-server">5. Open-folder behavior
+on Ubuntu Server</h2>
+<p>Pressing O did not produce a window because the guest had no
+graphical desktop/file manager. The current action requests
+<code>xdg-open</code> in the background; its status text reports a
+request rather than proving that a window opened. This behavior has been
+documented, not fixed in 3.0.2.</p>
+<p>After quitting simba, the user entered and listed the mounted
+directory:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/NetworkDrives/engineering_shared</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-al</span></span></code></pre></div>
+<p>The listing succeeded and showed an empty directory. Combined with
+the mount observation, this confirms mounted-directory access, not file
+read/write correctness. Q intentionally leaves mounts connected.</p>
+<h2 id="issue-and-fix-summary">Issue and fix summary</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue</th>
+<th style="text-align: left;">Cause/observation</th>
+<th style="text-align: left;">Action and outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SCP: No route to host</td>
+<td style="text-align: left;">Guest attachment did not match the
+laptop’s lab route</td>
+<td style="text-align: left;">Corrected client attachment; transfer
+succeeded</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SSH unavailable</td>
+<td style="text-align: left;">Service inactive</td>
+<td style="text-align: left;">Enabled and started SSH</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Repeated startup stty errors</td>
+<td style="text-align: left;">Geometry check could read redirected
+input</td>
+<td style="text-align: left;">Updated <code>terminal_size</code> in
+3.0.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Early SRV lookups failed</td>
+<td style="text-align: left;">Typing mistakes in record/domain name</td>
+<td style="text-align: left;">Corrected spelling; controller
+returned</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Discovery later timed out</td>
+<td style="text-align: left;">Client on <code>simba-lab</code>, Windows
+on <code>default</code></td>
+<td style="text-align: left;">Connected both to the same lab network;
+DNS and discovery succeeded</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">O opened no window</td>
+<td style="text-align: left;">Ubuntu Server had no graphical file
+manager</td>
+<td style="text-align: left;">Terminal directory access succeeded;
+clearer UI feedback remains future work</td>
+</tr>
+</tbody>
+</table>
+<h2 id="observed-live-results">Observed live results</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Test</th>
+<th style="text-align: left;">Result and limit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Script transfer</td>
+<td style="text-align: left;">Passed after network/SSH fixes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DNS controller lookup</td>
+<td style="text-align: left;">Passed; <code>dc01.corp.simba.test</code>,
+port 389</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">In-app domain discovery</td>
+<td style="text-align: left;">Passed; one domain/controller record</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Authentication and encrypted share
+listing</td>
+<td style="text-align: left;">Passed; seven disk shares shown</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Profile creation</td>
+<td style="text-align: left;">Passed for
+<code>engineering_shared</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mount</td>
+<td style="text-align: left;">Passed; SMB 3.1.1 reported</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Directory navigation/listing</td>
+<td style="text-align: left;">Passed; share was empty</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Graphical opening</td>
+<td style="text-align: left;">No window on the server-only
+installation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">File creation and read-back</td>
+<td style="text-align: left;">Pending</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Restricted-share denial</td>
+<td style="text-align: left;">Pending</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wrong-password behavior</td>
+<td style="text-align: left;">Covered by simulations; live VM check
+pending</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Busy disconnect</td>
+<td style="text-align: left;">Covered by simulations; live VM check
+pending</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Network loss/recovery</td>
+<td style="text-align: left;">Live VM check pending</td>
+</tr>
+</tbody>
+</table>
+<p>No throughput measurements or timing benchmarks were collected. The
+screenshots support functional observations, not performance claims or
+blanket compatibility with every domain policy.</p>
+<h2 id="next-validation-steps">Next validation steps</h2>
+<ol type="1">
+<li>Create a uniquely named disposable text file on the mounted lab
+share, read it back, and verify it from Windows.</li>
+<li>Confirm denial on <code>restricted</code> with the intended
+nonprivileged test account.</li>
+<li>Try an incorrect password and check the message and credential-file
+cleanup.</li>
+<li>Disconnect normally, then test a busy mount with a shell inside the
+directory; leave the directory and retry.</li>
+<li>Test network interruption/recovery and refresh the displayed mount
+state.</li>
+<li>Test O on an Ubuntu desktop and improve the no-desktop feedback
+path.</li>
+</ol>
+<p>These are planned checks, not completed results. Keep any disposable
+file cleanup limited to the file created for the test.</p>
+<h1 id="screenshot-record">Screenshot record</h1>
+<p>Galleries are chronological within each batch. Captions describe only
+what the screenshots establish. Both documents use the adjacent <code>simba-images</code> folder supplied in
+the documentation bundle. Extract the ZIP and keep that folder beside both documents.</p>
+<h2 id="batch-1-installation-and-configuration">Batch 1: installation
+and configuration</h2>
+<h3 id="screenshot-01">Screenshot 01</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-03-18.png</code></p>
+<figure>
+<img src="simba-images/01-14-03-18.png" alt="Starting Windows Server setup." />
+<figcaption aria-hidden="true">Starting Windows Server
+setup.</figcaption>
+</figure>
+<p>Starting Windows Server setup.</p>
+<h3 id="screenshot-02">Screenshot 02</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-04-16.png</code></p>
+<figure>
+<img src="simba-images/02-14-04-16.png" alt="Windows Server installation progress." />
+<figcaption aria-hidden="true">Windows Server installation
+progress.</figcaption>
+</figure>
+<p>Windows Server installation progress.</p>
+<h3 id="screenshot-03">Screenshot 03</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-18-55.png</code></p>
+<figure>
+<img src="simba-images/03-14-18-55.png" alt="Booting the Ubuntu Server installer." />
+<figcaption aria-hidden="true">Booting the Ubuntu Server
+installer.</figcaption>
+</figure>
+<p>Booting the Ubuntu Server installer.</p>
+<h3 id="screenshot-04">Screenshot 04</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-20-34.png</code></p>
+<figure>
+<img src="simba-images/04-14-20-34.png" alt="Ubuntu Server installation progress." />
+<figcaption aria-hidden="true">Ubuntu Server installation
+progress.</figcaption>
+</figure>
+<p>Ubuntu Server installation progress.</p>
+<h3 id="screenshot-05">Screenshot 05</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-30-15.png</code></p>
+<figure>
+<img src="simba-images/05-14-30-15.png" alt="Downloading Ubuntu packages." />
+<figcaption aria-hidden="true">Downloading Ubuntu packages.</figcaption>
+</figure>
+<p>Downloading Ubuntu packages.</p>
+<h3 id="screenshot-06">Screenshot 06</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-39-47.png</code></p>
+<figure>
+<img src="simba-images/06-14-39-47.png" alt="Installing Active Directory Domain Services on DC01." />
+<figcaption aria-hidden="true">Installing Active Directory Domain
+Services on DC01.</figcaption>
+</figure>
+<p>Installing Active Directory Domain Services on DC01.</p>
+<h3 id="screenshot-07">Screenshot 07</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-59-19(1).png</code></p>
+<figure>
+<img src="simba-images/07-14-59-19-1.png" alt="Configuring an inbound SMB firewall rule for the Ubuntu client." />
+<figcaption aria-hidden="true">Configuring an inbound SMB firewall rule
+for the Ubuntu client.</figcaption>
+</figure>
+<p>Configuring an inbound SMB firewall rule for the Ubuntu client.</p>
+<h3 id="screenshot-08">Screenshot 08</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 14-59-49(1).png</code></p>
+<figure>
+<img src="simba-images/08-14-59-49-1.png" alt="Share paths and encryption enabled for the three test shares." />
+<figcaption aria-hidden="true">Share paths and encryption enabled for
+the three test shares.</figcaption>
+</figure>
+<p>Share paths and encryption enabled for the three test shares.</p>
+<h3 id="screenshot-09">Screenshot 09</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-09-56(1).png</code></p>
+<figure>
+<img src="simba-images/09-15-09-56-1.png" alt="Applying Ubuntu networking; an early SRV query contains a typo." />
+<figcaption aria-hidden="true">Applying Ubuntu networking; an early SRV
+query contains a typo.</figcaption>
+</figure>
+<p>Applying Ubuntu networking; an early SRV query contains a typo.</p>
+<h3 id="screenshot-10">Screenshot 10</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-11-26(1).png</code></p>
+<figure>
+<img src="simba-images/10-15-11-26-1.png" alt="Hostname resolution works during DNS setup checks." />
+<figcaption aria-hidden="true">Hostname resolution works during DNS
+setup checks.</figcaption>
+</figure>
+<p>Hostname resolution works during DNS setup checks.</p>
+<h2 id="batch-2-transfer-startup-and-dns-troubleshooting">Batch 2:
+transfer, startup, and DNS troubleshooting</h2>
+<h3 id="screenshot-13">Screenshot 13</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-15-32(1).png</code></p>
+<figure>
+<img src="simba-images/13-15-15-32-1.png" alt="Authenticated encrypted SMB3 enumeration lists server shares." />
+<figcaption aria-hidden="true">Authenticated encrypted SMB3 enumeration
+lists server shares.</figcaption>
+</figure>
+<p>Authenticated encrypted SMB3 enumeration lists server shares.</p>
+<h3 id="screenshot-14">Screenshot 14</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-18-51(1).png</code></p>
+<figure>
+<img src="simba-images/14-15-18-51-1.png" alt="SCP and reachability failures; SSH is inactive in the guest." />
+<figcaption aria-hidden="true">SCP and reachability failures; SSH is
+inactive in the guest.</figcaption>
+</figure>
+<p>SCP and reachability failures; SSH is inactive in the guest.</p>
+<h3 id="screenshot-15">Screenshot 15</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-19-42(1).png</code></p>
+<figure>
+<img src="simba-images/15-15-19-42-1.png" alt="Enabling and starting SSH." />
+<figcaption aria-hidden="true">Enabling and starting SSH.</figcaption>
+</figure>
+<p>Enabling and starting SSH.</p>
+<h3 id="screenshot-16">Screenshot 16</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-19-55.png</code></p>
+<figure>
+<img src="simba-images/16-15-19-55.png" alt="Both guests initially attached to default." />
+<figcaption aria-hidden="true">Both guests initially attached to
+default.</figcaption>
+</figure>
+<p>Both guests initially attached to default.</p>
+<h3 id="screenshot-17">Screenshot 17</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-23-28.png</code></p>
+<figure>
+<img src="simba-images/17-15-23-28.png" alt="Ping and SCP succeed after correcting client connectivity." />
+<figcaption aria-hidden="true">Ping and SCP succeed after correcting
+client connectivity.</figcaption>
+</figure>
+<p>Ping and SCP succeed after correcting client connectivity.</p>
+<h3 id="screenshot-18">Screenshot 18</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-24-20.png</code></p>
+<figure>
+<img src="simba-images/18-15-24-20.png" alt="Initial simba 3.0.1 interface with no saved profiles." />
+<figcaption aria-hidden="true">Initial simba 3.0.1 interface with no
+saved profiles.</figcaption>
+</figure>
+<p>Initial simba 3.0.1 interface with no saved profiles.</p>
+<h3 id="screenshot-19">Screenshot 19</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-24-42.png</code></p>
+<figure>
+<img src="simba-images/19-15-24-42.png" alt="Startup emits stty input errors." />
+<figcaption aria-hidden="true">Startup emits stty input
+errors.</figcaption>
+</figure>
+<p>Startup emits stty input errors.</p>
+<h3 id="screenshot-20">Screenshot 20</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-28-05.png</code></p>
+<figure>
+<img src="simba-images/20-15-28-05.png" alt="Updated simba 3.0.2 startup progress display." />
+<figcaption aria-hidden="true">Updated simba 3.0.2 startup progress
+display.</figcaption>
+</figure>
+<p>Updated simba 3.0.2 startup progress display.</p>
+<h3 id="screenshot-21">Screenshot 21</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-28-26(1).png</code></p>
+<figure>
+<img src="simba-images/21-15-28-26-1.png" alt="Manual lookup for corp.simba.test." />
+<figcaption aria-hidden="true">Manual lookup for
+corp.simba.test.</figcaption>
+</figure>
+<p>Manual lookup for corp.simba.test.</p>
+<h3 id="screenshot-22">Screenshot 22</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-28-45(1).png</code></p>
+<figure>
+<img src="simba-images/22-15-28-45-1.png" alt="No controller records returned during the network mismatch." />
+<figcaption aria-hidden="true">No controller records returned during the
+network mismatch.</figcaption>
+</figure>
+<p>No controller records returned during the network mismatch.</p>
+<h2 id="batch-3-successful-discovery-and-share-access">Batch 3:
+successful discovery and share access</h2>
+<h3 id="screenshot-25">Screenshot 25</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-35-47(2).png</code></p>
+<figure>
+<img src="simba-images/25-15-35-47-2.png" alt="DNS returns DC01 after correcting guest network connectivity." />
+<figcaption aria-hidden="true">DNS returns DC01 after correcting guest
+network connectivity.</figcaption>
+</figure>
+<p>DNS returns DC01 after correcting guest network connectivity.</p>
+<h3 id="screenshot-26">Screenshot 26</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-36-03(2).png</code></p>
+<figure>
+<img src="simba-images/26-15-36-03-2.png" alt="Discovery menu includes corp.simba.test and rescan controls." />
+<figcaption aria-hidden="true">Discovery menu includes corp.simba.test
+and rescan controls.</figcaption>
+</figure>
+<p>Discovery menu includes corp.simba.test and rescan controls.</p>
+<h3 id="screenshot-27">Screenshot 27</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-36-12(2).png</code></p>
+<figure>
+<img src="simba-images/27-15-36-12-2.png" alt="Discovery completed: one candidate and one domain found." />
+<figcaption aria-hidden="true">Discovery completed: one candidate and
+one domain found.</figcaption>
+</figure>
+<p>Discovery completed: one candidate and one domain found.</p>
+<h3 id="screenshot-28">Screenshot 28</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-36-24(2).png</code></p>
+<figure>
+<img src="simba-images/28-15-36-24-2.png" alt="Selected domain and advertised controller details." />
+<figcaption aria-hidden="true">Selected domain and advertised controller
+details.</figcaption>
+</figure>
+<p>Selected domain and advertised controller details.</p>
+<h3 id="screenshot-29">Screenshot 29</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-37-47(2).png</code></p>
+<figure>
+<img src="simba-images/29-15-37-47-2.png" alt="Browse form with dc01, the lab domain, and simbauser." />
+<figcaption aria-hidden="true">Browse form with dc01, the lab domain,
+and simbauser.</figcaption>
+</figure>
+<p>Browse form with dc01, the lab domain, and simbauser.</p>
+<h3 id="screenshot-30">Screenshot 30</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-38-04(2).png</code></p>
+<figure>
+<img src="simba-images/30-15-38-04-2.png" alt="Seven disk shares listed in the right panel." />
+<figcaption aria-hidden="true">Seven disk shares listed in the right
+panel.</figcaption>
+</figure>
+<p>Seven disk shares listed in the right panel.</p>
+<h3 id="screenshot-31">Screenshot 31</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-38-27(2).png</code></p>
+<figure>
+<img src="simba-images/31-15-38-27-2.png" alt="Reviewing the engineering_shared profile settings." />
+<figcaption aria-hidden="true">Reviewing the engineering_shared profile
+settings.</figcaption>
+</figure>
+<p>Reviewing the engineering_shared profile settings.</p>
+<h3 id="screenshot-32">Screenshot 32</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-40-57(2).png</code></p>
+<figure>
+<img src="simba-images/32-15-40-57-2.png" alt="engineering_shared shown mounted using SMB 3.1.1." />
+<figcaption aria-hidden="true">engineering_shared shown mounted using
+SMB 3.1.1.</figcaption>
+</figure>
+<p>engineering_shared shown mounted using SMB 3.1.1.</p>
+<h3 id="screenshot-33">Screenshot 33</h3>
+<p><strong>Filename:</strong>
+<code>Screenshot from 2026-10-18 15-42-31(2).png</code></p>
+<figure>
+<img src="simba-images/33-15-42-31-2.png" alt="Terminal navigation and listing succeed; the share is empty." />
+<figcaption aria-hidden="true">Terminal navigation and listing succeed;
+the share is empty.</figcaption>
+</figure>
+<p>Terminal navigation and listing succeed; the share is empty.</p>
 <h1 id="revision-history">Revision history</h1>
-<p>All script entries below are dated <strong>17 October 2026</strong>.
-Documentation created <strong>18 October 2026</strong>.</p>
+<p>Version <strong>3.0.2</strong> is dated <strong>18 October
+2026</strong>. Earlier entries are dated <strong>17 October
+2026</strong>. Documentation updated <strong>18 October 2026</strong>
+with the live VM record and screenshots.</p>
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -872,78 +1532,82 @@ Documentation created <strong>18 October 2026</strong>.</p>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">3.0.2</td>
+<td style="text-align: left;">Read terminal dimensions independently of
+redirected task input; documented live VM results</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">3.0.1</td>
 <td style="text-align: left;">Comment separators and expanded authorship
 header</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">3.0.0</td>
 <td style="text-align: left;">Native overlay popups preserve the menu
 and panels</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">2.4.1</td>
 <td style="text-align: left;">Restored full-screen buffer after external
 dialogs; superseded by native overlays</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">2.4.0</td>
 <td style="text-align: left;">Terminal startup prefetch</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">2.3.0</td>
 <td style="text-align: left;">Task status, measured progress, and
 animated waits</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">2.2.2</td>
 <td style="text-align: left;">Reset colors after leaving the alternate
 screen</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">2.2.1</td>
 <td style="text-align: left;">Sized, scrollable Help viewer</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">2.2.0</td>
 <td style="text-align: left;">Letter shortcuts and joined double-line
 dividers</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">2.1.1</td>
 <td style="text-align: left;">Clear exit screen, goodbye message, and
 comments</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">2.1.0</td>
 <td style="text-align: left;">Dependency setup and simba name</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">2.0.1</td>
 <td style="text-align: left;">Earlier smbnav name</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">2.0.0</td>
 <td style="text-align: left;">Norton Commander layout and dual
 panels</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">1.2.0</td>
 <td style="text-align: left;">Authenticated share browsing and profile
 creation</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">1.1.0</td>
 <td style="text-align: left;">DNS domain discovery</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">1.0.0</td>
 <td style="text-align: left;">Initial terminal interface, profiles, and
 SMB3 mounts</td>
 </tr>
 </tbody>
 </table>
-<footer class="page-footer">simba 3.0.1 · Teo Espero · Documentation: 18 October 2026</footer>
-</main>
+</main><footer>Teo Espero · simba 3.0.2 · Updated 18 October 2026</footer>
 </body>
 </html>

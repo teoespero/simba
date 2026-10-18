@@ -6,12 +6,13 @@
 # Author:   Teo Espero
 # Platform: Ubuntu/Debian; Bash 4.4 or newer
 # Created:  2026-10-17
-# Updated:  2026-10-17
-# Version:  3.0.1
+# Updated:  2026-10-18
+# Version:  3.0.2
 # ------------------------------------
 # Revision history
 # ------------------------------------
 # Version  Date        Change
+# 3.0.2  2026-10-18  Read terminal size independently of redirected task input.
 # 3.0.1  2026-10-17  Added comment separators and expanded authorship header.
 # 3.0.0  2026-10-17  Native overlay popups preserve the menu and drive panels.
 # 2.4.1  2026-10-17  Restore full-screen buffer after dialogs close.
@@ -49,7 +50,7 @@ umask 077
 # CIFS helpers can live in sbin even for normal users.
 # ------------------------------------
 PATH="${PATH:-/usr/bin:/bin}:/usr/sbin:/sbin"
-VERSION=3.0.1
+VERSION=3.0.2
 STATUS='Ready. G: discover domains. B: browse shares. H: help.'
 DISCOVERED_DOMAIN=''
 declare -a FOUND_DOMAINS=() FOUND_CONTROLLERS=() FOUND_COUNTS=()
@@ -183,9 +184,29 @@ modal_wrap() {
         UI_LINES+=("$segment")
     done <<< "$text"
 }
+# ------------------------------------
+# Query the terminal directly because a task or process substitution may have
+# redirected stdin to data or /dev/null. Descriptor 2 also supports PTY test
+# harnesses without a controlling terminal. A small fallback avoids unbound
+# dimensions if no terminal can be queried; callers still enforce minimum size.
+# ------------------------------------
+terminal_size() {
+    local dimensions='' rows=0 cols=0
+    if dimensions=$({ stty size </dev/tty; } 2>/dev/null) ||
+        dimensions=$(stty size <&2 2>/dev/null) ||
+        dimensions=$(stty size 2>/dev/null); then
+        read -r rows cols <<< "$dimensions"
+        if [[ $rows =~ ^[0-9]+$ && $cols =~ ^[0-9]+$ ]] &&
+            ((rows>0 && cols>0)); then
+            printf '%s %s\n' "$rows" "$cols"
+            return 0
+        fi
+    fi
+    printf '24 80\n'
+}
 modal_geometry() {
     local old_rows=${UI_ROWS:-0} old_cols=${UI_COLS:-0} available
-    read -r UI_ROWS UI_COLS < <(stty size)
+    read -r UI_ROWS UI_COLS < <(terminal_size)
     if ((UI_ROWS<24 || UI_COLS<100)); then draw >&2; return 1; fi
     UI_WIDTH=$UI_REQUEST_WIDTH; UI_HEIGHT=$UI_REQUEST_HEIGHT
     ((UI_WIDTH>UI_COLS-8)) && UI_WIDTH=$((UI_COLS-8))
@@ -492,7 +513,7 @@ progress_draw() {
     # ------------------------------------
     ((ACTIVE)) && [[ -t 1 ]] || return 0
     local rows cols
-    read -r rows cols < <(stty size)
+    read -r rows cols < <(terminal_size)
     ((rows>=24 && cols>=100)) || return 0
     printf '\033[37;44m'
     at "$((rows-2))" 2 "$((cols-2))" "Status: $STATUS"
@@ -849,7 +870,7 @@ require_selection() { ((${#IDS[@]})) || { info 'Add a drive first using A.'; tas
 # ------------------------------------
 draw() {
     local dims rows cols visible frame
-    dims=$(stty size); read -r rows cols <<< "$dims"
+    dims=$(terminal_size); read -r rows cols <<< "$dims"
     if (( rows < 24 || cols < 100 )); then
         printf '\033[37;44m\033[H\033[2J'
         ((cols > 3)) && at 2 2 "$((cols-3))" 'Resize to at least 100 columns x 24 rows. Q quits.'
@@ -1106,7 +1127,7 @@ remove_drive() {
 # ------------------------------------
 help_screen() {
     local rows cols height width help_file="$RUN_DIR/help.txt"
-    read -r rows cols < <(stty size)
+    read -r rows cols < <(terminal_size)
     height=$((rows-4)); width=$((cols-6))
     ((height>28)) && height=28
     ((width>84)) && width=84
@@ -1249,7 +1270,7 @@ handle_key() {
         up|k|K) move_selection -1;; down|j|J) move_selection 1;;
         home) move_selection -1000000;; end) move_selection 1000000;;
         pageup|pagedown)
-            read -r rows cols < <(stty size)
+            read -r rows cols < <(terminal_size)
             rows=$((rows>16 ? rows-16 : 1))
             [[ $1 == pageup ]] && rows=$((-rows))
             move_selection "$rows";;
@@ -1391,7 +1412,7 @@ ensure_dependencies() {
 # ------------------------------------
 startup_progress_draw() {
     local rows cols text
-    read -r rows cols < <(stty size)
+    read -r rows cols < <(terminal_size)
     ((cols>10)) || cols=80
     # ------------------------------------
     # Reuse just two terminal lines. This is not the full-screen interface and
